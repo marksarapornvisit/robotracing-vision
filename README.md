@@ -4,5 +4,7 @@
 
 1. Python 3 
 2. OpenCv 3.1.0 with contrib module
-3. imutilis
+3. imutils
 > pip install --upgrade imutils
+4. scipy matplotlib ipython jupyter pandas sympy nose
+> pip install numpy scipy matplotlib ipython jupyter pandas sympy nose
