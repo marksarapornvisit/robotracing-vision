@@ -10,10 +10,12 @@ import time
 import cv2
 
 import lanedetector as lane
+import obstracleavoidance as obst
+
 # import os
 
 
-fvs = FileVideoStream("videos/GOPR0205_2.avi").start()
+fvs = FileVideoStream("videos/GOPR0204.avi").start()
 
 # start the FPS timer
 fps = FPS().start()
@@ -35,6 +37,10 @@ while fvs.more():
         # main algorithm goes here
         # set perspective
         perspective = lane.perspective_transform(frame)
+
+        # obstracle avoidance
+        pathAvaliable = obst.main(perspective)
+
         # detect and draw 
         for i in range(3,7):
             region, thresh, position = lane.detect(perspective, [[0, 1], [i/10, i/10+0.05]])
@@ -46,7 +52,9 @@ while fvs.more():
                     cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 0), 2)
 
         # show the frame and update the FPS counter
-        cv2.imshow("Frame", gray)
+        H = cv2.cvtColor(perspective, cv2.COLOR_BGR2HSV)[:,:,0]
+        cv2.imshow("pathAvaliable", pathAvaliable)
+        cv2.imshow("real", gray)
         cv2.imshow("Perspective", perspective)
 
         if cv2.waitKey(1) == ord('q'):
